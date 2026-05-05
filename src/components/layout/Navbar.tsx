@@ -1,11 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Bell, Search } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 
 export default function Navbar() {
  const [showNotifications, setShowNotifications] = useState(false);
+ const [profile, setProfile] = useState({ name: "Amey M.", role: "Admin", photo: "" });
+
+ useEffect(() => {
+   const loadProfile = () => {
+     setProfile({
+       name: localStorage.getItem("herohr_profile_name") || "Amey M.",
+       role: localStorage.getItem("herohr_profile_role") || "Admin",
+       photo: localStorage.getItem("herohr_profile_photo") || ""
+     });
+   };
+   loadProfile();
+   window.addEventListener("herohr-profile-updated", loadProfile);
+   return () => window.removeEventListener("herohr-profile-updated", loadProfile);
+ }, []);
+
+ const getInitials = (name: string) => {
+   return name.split(" ").map(n => n[0]).join("").toUpperCase().substring(0, 2);
+ };
 
  return (
  <div className="h-14 bg-[#ffffff] dark:bg-[#0a0a0a] border-b border-[#e5e7eb] dark:border-[#262626] flex items-center justify-between px-8 z-10 sticky top-0 transition-colors duration-200">
@@ -84,19 +103,23 @@ export default function Navbar() {
  <div className="h-8 w-px bg-gray-200 dark:bg-[#262626] mx-1 transition-colors duration-200" />
 
  {/* Profile */}
- <button className="flex items-center gap-3 cursor-pointer group">
+ <Link href="/profile" className="flex items-center gap-3 cursor-pointer group">
  <div className="text-right hidden sm:block">
  <p className="text-sm font-semibold text-gray-700 dark:text-[#f8fafc] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200 whitespace-nowrap">
- Amey M.
+ {profile.name}
  </p>
- <p className="text-[11px] font-medium text-gray-400 dark:text-[#737373] whitespace-nowrap">Admin</p>
+ <p className="text-[11px] font-medium text-gray-400 dark:text-[#737373] whitespace-nowrap">{profile.role}</p>
  </div>
  <div className="relative w-10 h-10 shrink-0 rounded-full overflow-hidden border-2 border-gray-100 dark:border-[#262626] group- transition-colors duration-200">
- <div className="w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">
- AM
+ {profile.photo ? (
+  <img src={profile.photo} alt={profile.name} className="w-full h-full object-cover" />
+ ) : (
+  <div className="w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">
+  {getInitials(profile.name)}
+  </div>
+ )}
  </div>
- </div>
- </button>
+ </Link>
  </div>
  </div>
  );

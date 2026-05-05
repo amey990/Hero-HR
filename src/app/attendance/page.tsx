@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
  Clock, MapPin, CalendarCheck, CalendarX, AlertTriangle, Home,
  Timer, Award, TrendingUp, FileText, Shield, ChevronDown
@@ -52,9 +53,9 @@ export default function AttendancePage() {
  <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Attendance Overview</h1>
  <p className="text-gray-500 dark:text-[#a1a1aa] mt-1 text-sm font-medium">Track your daily attendance, work hours and monthly consistency.</p>
  </div>
- <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-[#262626] text-sm font-semibold text-gray-700 dark:text-[#cbd5e1] bg-white dark:bg-[#111111] hover:bg-gray-50 dark:bg-[#111111] dark:hover:bg-[#181818] transition-colors">
+ <Link href="/attendance/regularization" className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-[#262626] text-sm font-semibold text-gray-700 dark:text-[#cbd5e1] bg-white dark:bg-[#111111] hover:bg-gray-50 dark:bg-[#111111] dark:hover:bg-[#181818] transition-colors">
  <FileText size={16} /> Request Regularization
- </button>
+ </Link>
  </div>
 
  {/* Today's Attendance + Attendance Score */}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
 import {
  LayoutDashboard,
@@ -51,6 +51,7 @@ const menuItems: MenuItem[] = [
  submenu: [
  { name: "Overview", path: "/attendance" },
  { name: "Calendar", path: "/attendance/calendar" },
+ { name: "Regularization", path: "/attendance/regularization" },
  ],
  },
  {
@@ -80,11 +81,10 @@ const menuItems: MenuItem[] = [
 
 export default function Sidebar() {
  const [isCollapsed, setIsCollapsed] = useState(false);
- const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
- Attendance: true, // Expand attendance by default for demo
- });
+ const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
  const [isHelpOpen, setIsHelpOpen] = useState(false);
  const pathname = usePathname();
+ const router = useRouter();
 
  const toggleSubmenu = (name: string) => {
  if (isCollapsed) {
@@ -112,7 +112,7 @@ export default function Sidebar() {
  )}
  >
  {/* Header */}
- <div className="h-16 flex items-center justify-between px-6 border-b border-gray-50 dark:border-[#262626] shrink-0 transition-colors">
+ <div className="h-14 flex items-center justify-between px-6 border-b border-gray-50 dark:border-[#262626] shrink-0 transition-colors">
  {!isCollapsed && (
  <div className="flex items-center gap-3 overflow-hidden">
  <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shrink-0">
@@ -256,7 +256,7 @@ export default function Sidebar() {
  {!isCollapsed && <span className="text-[14px] whitespace-nowrap">Help</span>}
  </button>
  <button
- onClick={() => console.log("Logout clicked")}
+ onClick={() => router.push("/login")}
  className={clsx(
  "flex items-center gap-3.5 transition-all duration-200 group w-full text-gray-500 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400",
  isCollapsed ? "justify-center h-12 w-12 px-0 mx-auto rounded-xl" : "px-3.5 py-3 rounded-xl"
